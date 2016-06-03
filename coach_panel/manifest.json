@@ -6,10 +6,12 @@
   "devtools_page": "devtools.html",
   "background": {
     "scripts": [
-      "assets/javascripts/background.js"
+      "assets/js/background.js"
     ]
   },
   "permissions": [
+    "<all_urls>",
+    "tabs",
     "http://*/*",
     "https://*/*"
   ],
