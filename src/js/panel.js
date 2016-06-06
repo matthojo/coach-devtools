@@ -30,17 +30,21 @@ Console.addMessage = function(type, format, args) {
   }
 })();
 
-chrome.runtime.sendMessage({
-  command: "init",
-  tabId: chrome.devtools.tabId
-  },
-  function(response) {
-    outputResults(results)
-  }
-)
 
-function outputResults(results) {
+$('.js-analyse').on('click', function() {
+  chrome.runtime.sendMessage({
+      command: "init",
+      tabId: chrome.devtools.tabId
+    },
+    function(response) {
+      outputResults(results)
+    }
+  )
+})
 
+function outputResults(result) {
+  var $results = $('.js-results')
+  $results.append(result.advice.score)
 }
 
 $('.results').text('Hello')
