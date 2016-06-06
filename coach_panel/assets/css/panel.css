@@ -20,9 +20,8 @@ body {
   display: flex;
   align-items: center;
   padding: 0.312rem 1.25rem;
-  margin-bottom: 1.25rem;
   background-color: #eceff1;
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #ccc;
 }
 
 .nav__button {
@@ -61,8 +60,20 @@ body {
   font-size: 0.875rem;
 }
 
-.is-good {
+.advice-section {
+  padding-left: 1.25rem;
+}
+
+.advice-sub-section {
+  border-left: 1px solid #ccc;
+}
+
+.is-amazing {
   color: #4caf50;
+}
+
+.is-good {
+  color: #8bc34a;
 }
 
 .is-ok {
@@ -72,6 +83,14 @@ body {
 .is-bad {
   color: #f44336;
 }
+
+/*.toggle :after {
+  content: ' \9660'
+}
+
+.toggle.is-visible :after {
+  content: ' \9650'
+}*/
 
 .button {
   padding: 10px 20px 10px 20px;

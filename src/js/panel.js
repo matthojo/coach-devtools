@@ -34,12 +34,13 @@ Console.addMessage = function (type, format, args) {
 var $results = document.getElementsByClassName('js-results')[0]
 var $score = document.getElementsByClassName('.js-score')[0]
 
-document.getElementsByClassName('js-analyse')[0].addEventListener('click', function () {
+document.getElementsByClassName('js-analyse')[0].addEventListener('click', function (e) {
   chrome.runtime.sendMessage({
     command: 'init',
     tabId: chrome.devtools.tabId
   },
   function (response) {
+    e.target.innerText = 'Re-Analyse'
     $results.innerHTML = ''
     outputResults(response)
   }
@@ -61,16 +62,21 @@ function outputResults (result) {
   keys.forEach(function (key) {
     var $title
     var adviceList
+    var $adviceSection
 
     if (result.advice[key].adviceList) {
       $title = document.createElement('h2')
 
       $title.appendChild(document.createTextNode(key + ' (' + result.advice[key].score + '/100)'))
       colourScore($title, result.advice[key].score)
+      $title.classList.add('js-toggle', 'toggle')
       output.appendChild($title)
 
-      adviceList = Object.keys(result.advice[key].adviceList).sort()
+      $adviceSection = document.createElement('div')
+      $adviceSection.classList.add('advice-section')
+      $adviceSection.style.display = 'none'
 
+      adviceList = Object.keys(result.advice[key].adviceList).sort()
       adviceList.forEach(function (advice) {
         var adviceObj = result.advice[key].adviceList[advice]
 
@@ -78,63 +84,142 @@ function outputResults (result) {
         var $adviceTitle = document.createElement('h3')
         $adviceTitle.appendChild(document.createTextNode(adviceObj.title + ' (' + adviceObj.score + '/100)'))
         colourScore($adviceTitle, adviceObj.score)
-        output.appendChild($adviceTitle)
+        $adviceTitle.classList.add('js-toggle', 'toggle')
+        $adviceSection.appendChild($adviceTitle)
+
+        var $adviceSubSection = document.createElement('div')
+        $adviceSubSection.classList.add('advice-section', 'advice-sub-section')
+        $adviceSubSection.style.display = 'none'
 
         // Add Advice summary
         var $adviceAdvice = document.createElement('p')
         $adviceAdvice.appendChild(document.createTextNode(adviceObj.advice))
-        output.appendChild($adviceAdvice)
+        $adviceSubSection.appendChild($adviceAdvice)
 
         // Add Advice description
         var $adviceDescription = document.createElement('p')
         $adviceDescription.appendChild(document.createTextNode(adviceObj.description))
-        output.appendChild($adviceDescription)
+        $adviceSubSection.appendChild($adviceDescription)
 
         // Add Advice Offending Areas
         if (adviceObj.offending.length > 0) {
           var $adviceOffendigTitle = document.createElement('h4')
           $adviceOffendigTitle.appendChild(document.createTextNode('Offending Areas'))
-          output.appendChild($adviceOffendigTitle)
+          $adviceSubSection.appendChild($adviceOffendigTitle)
 
           var $adviceOffending = document.createElement('pre')
           var offendingList = adviceObj.offending.join('\n')
           $adviceOffending.appendChild(document.createTextNode(offendingList))
-          output.appendChild($adviceOffending)
+          $adviceSubSection.appendChild($adviceOffending)
         }
+        $adviceSection.appendChild($adviceSubSection)
       })
+      output.appendChild($adviceSection)
     } else {
       $title = document.createElement('h2')
       $title.appendChild(document.createTextNode(key.toString()))
+      $title.classList.add('js-toggle', 'toggle')
       postOutput.appendChild($title)
+
+      $adviceSection = document.createElement('div')
+      $adviceSection.classList.add('advice-section')
+      $adviceSection.style.display = 'none'
 
       if (typeof result.advice[key] === 'object') {
         // Output list of results
+        var $adviceValueList = document.createElement('pre')
+
         adviceList = Object.keys(result.advice[key]).sort()
+        var formattedValues = []
         adviceList.forEach(function (advice) {
           var adviceValue = result.advice[key][advice]
-          var $adviceTitle = document.createElement('h3')
-          $adviceTitle.appendChild(document.createTextNode(advice + ': ' + adviceValue))
-          postOutput.appendChild($adviceTitle)
+          formattedValues.push(advice + ': ' + adviceValue + '\n')
         })
+        var valuesList = formattedValues.join('\n')
+        $adviceValueList.appendChild(document.createTextNode(valuesList))
+        $adviceSection.appendChild($adviceValueList)
       } else {
         // Output single result
         var adviceValue = result.advice[key]
         var $adviceTitle = document.createElement('h3')
         $adviceTitle.appendChild(document.createTextNode(key + ': ' + adviceValue))
-        postOutput.appendChild($adviceTitle)
+        $adviceSection.appendChild($adviceTitle)
       }
+      postOutput.appendChild($adviceSection)
     }
   })
   output.appendChild(postOutput)
   $results.appendChild(output)
+
+  // unicornify()
+
+  var toggles = document.getElementsByClassName('js-toggle')
+  for (var i = 0; i < toggles.length; i++) {
+    toggles[i].addEventListener('click', function (e) {
+      var $target = e.target
+      if (e.target.classList.contains('js-toggle')) {
+        $target.classList.toggle('is-visible')
+        if ($target.classList.contains('is-visible')) {
+          $target.nextElementSibling.style.display = ''
+        } else {
+          $target.nextElementSibling.style.display = 'none'
+        }
+      }
+    }, false)
+  }
 }
 
 function colourScore ($elem, score) {
-  if (score > 75) {
-    $elem.className += 'is-good'
+  if (score === 100) {
+    $elem.classList.add('is-amazing', 'is-unicorn')
+  } else if (score > 75) {
+    $elem.classList.add('is-good')
   } else if (score > 50) {
-    $elem.className += 'is-ok'
+    $elem.classList.add('is-ok')
   } else {
-    $elem.className += 'is-bad'
+    $elem.classList.add('is-bad')
+  }
+}
+
+function unicornify () {
+  var step = 4 // colorChage step, use negative value to change direction
+  var ms = 10 // loop every
+  var $unicorns = document.getElementsByClassName('is-unicorn')
+  var itv
+
+  for (var i = 0; i < $unicorns.length; i++) {
+    var $uni = $unicorns[i]
+    var txt = $uni.innerHTML
+    var len = txt.length
+    var lev = 360 / len
+    var newCont = ''
+
+    for (var j = 0; j < len; j++) {
+      newCont += '<span style=\'color:hsla(' + j * lev + ', 100%, 50%, 1)\'>' + txt.charAt(j) + '</span>'
+    }
+
+    $uni.innerHTML = newCont // Replace with new content
+
+    $uni.addEventListener('mouseover', function (e) {
+      var $ch = e.target.parentNode.querySelectorAll('span')
+      anim($ch)
+    }, false)
+
+    $uni.addEventListener('mouseout', function (e) {
+      stop()
+    }, false)
+  }
+
+  function anim ($ch) {
+    itv = setInterval(function () {
+      $ch.forEach(function (k) {
+        var h = +k.getAttribute('style').split(',')[0].split('(')[1] - step % 360
+        k.setAttribute('style', 'color:hsla(' + h + ', 100%, 50%, 1)')
+      })
+    }, ms)
+  }
+
+  function stop () {
+    clearInterval(itv)
   }
 }
