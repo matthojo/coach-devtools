@@ -14,7 +14,7 @@ Console.Type = {
 };
 
 Console.addMessage = function(type, format, args) {
-  chrome.extension.sendRequest({
+  chrome.runtime.sendMessage({
       command: "sendToConsole",
       tabId: chrome.devtools.tabId,
       args: escape(JSON.stringify(Array.prototype.slice.call(arguments, 0)))
@@ -30,19 +30,19 @@ Console.addMessage = function(type, format, args) {
   }
 })();
 
-Console.log('Starting... panel')
-
-chrome.extension.sendRequest({
+chrome.runtime.sendMessage({
   command: "init",
-  tabId: webInspector.inspectedWindow.tabId
+  tabId: chrome.devtools.tabId
   },
-  function(results) {
-    Console.log('Done..')
-    Console.log(results)
+  function(response) {
+    outputResults(results)
   }
 )
 
-Console.log('Started')
+function outputResults(results) {
+
+}
+
 $('.results').text('Hello')
 
 // var score = result.advice.score;

@@ -10,7 +10,7 @@
     ]
   },
   "permissions": [
-    "<all_urls>",
+    "activeTab",
     "tabs",
     "http://*/*",
     "https://*/*"

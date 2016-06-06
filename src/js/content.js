@@ -1,8 +1,8 @@
-console.log('Initialised script...')
-
 var domconsole = require('../vendor/js/domconsole')
-  , result = domconsole()
 
-chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+console.log('Running Coach...')
+
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  var result = domconsole()
   sendResponse(result);
 });
