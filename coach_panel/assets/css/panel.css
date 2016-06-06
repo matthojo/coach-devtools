@@ -20,6 +20,7 @@ body {
   display: flex;
   align-items: center;
   padding: 0.312rem 1.25rem;
+  margin-bottom: 1.25rem;
   background-color: #eceff1;
   border-bottom: 1px solid #cccccc;
 }
@@ -39,6 +40,37 @@ body {
   width: auto;
   height: auto;
   max-height: 100%;
+}
+
+.results-panel__score {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.results-panel {
+  padding: 0.312rem 1.25rem;
+}
+
+.results-panel h2{
+  padding: 0.312rem 1.25rem 0.312rem 0;
+  text-transform: capitalize;
+}
+
+.results-panel pre {
+  font-size: 0.875rem;
+}
+
+.is-good {
+  color: #4caf50;
+}
+
+.is-ok {
+  color: #ff9800;
+}
+
+.is-bad {
+  color: #f44336;
 }
 
 .button {
