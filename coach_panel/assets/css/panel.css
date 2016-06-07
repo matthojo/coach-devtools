@@ -52,8 +52,17 @@ body {
 }
 
 .results-panel h2{
+  margin: 0;
   padding: 0.312rem 1.25rem 0.312rem 0;
   text-transform: capitalize;
+}
+
+.results-panel h3{
+  margin-bottom: 0.312rem;
+}
+
+.results-panel p {
+  line-height: 1.5;
 }
 
 .results-panel pre {
@@ -84,13 +93,27 @@ body {
   color: #f44336;
 }
 
-/*.toggle :after {
-  content: ' \9660'
+.toggle {
+  cursor: pointer;
 }
 
-.toggle.is-visible :after {
-  content: ' \9650'
-}*/
+.toggle:after {
+  content: ' \25bc';
+  display: inline-block;
+  margin-left: 0.625rem;
+  color: #ccc;
+  font-size: 0.5em;
+  vertical-align: middle;
+}
+
+.toggle.is-visible:after {
+  content: ' \25b2'
+}
+
+.content-center {
+  max-width: 67.5rem;
+  margin: 0 auto;
+}
 
 .button {
   padding: 10px 20px 10px 20px;

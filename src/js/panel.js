@@ -31,9 +31,6 @@ Console.addMessage = function (type, format, args) {
   }
 })()
 
-var $results = document.getElementsByClassName('js-results')[0]
-var $score = document.getElementsByClassName('.js-score')[0]
-
 document.getElementsByClassName('js-analyse')[0].addEventListener('click', function (e) {
   chrome.runtime.sendMessage({
     command: 'init',
@@ -41,7 +38,6 @@ document.getElementsByClassName('js-analyse')[0].addEventListener('click', funct
   },
   function (response) {
     e.target.innerText = 'Re-Analyse'
-    $results.innerHTML = ''
     outputResults(response)
   }
   )
@@ -49,14 +45,28 @@ document.getElementsByClassName('js-analyse')[0].addEventListener('click', funct
 
 function outputResults (result) {
   Console.log(result)
+
+  // Get content containers
+  var $results = document.getElementsByClassName('js-results')[0]
+  var $score = document.getElementsByClassName('js-score')[0]
+
+  // Reset content (for re-analysing)
+  $results.innerHTML = ''
+  $score.innerHTML = ''
+
+  // Create fragments to reduce reflow
   var output = document.createDocumentFragment()
   var postOutput = document.createDocumentFragment()
+  var scoreOutput = document.createDocumentFragment()
 
-  // colourScore($score, result.advice.score)
-  // var scoreText = document.createTextNode('Score: ' + result.advice.score + '/100')
-  // $score.innerHTML = 'hello'
+  // Append Score
+  var scoreText = document.createTextNode('Score: ' + result.advice.score + '/100')
+  scoreOutput.appendChild(scoreText)
+  $score.appendChild(scoreOutput)
+  colourScore($score, result.advice.score)
   delete result.advice.score
 
+  // Append Advice
   var keys = Object.keys(result.advice).sort()
 
   keys.forEach(function (key) {
@@ -133,7 +143,15 @@ function outputResults (result) {
         var formattedValues = []
         adviceList.forEach(function (advice) {
           var adviceValue = result.advice[key][advice]
-          formattedValues.push(advice + ': ' + adviceValue + '\n')
+          if (typeof result.advice[key][advice] === 'object') {
+            adviceList = Object.keys(result.advice[key][advice]).sort()
+            adviceList.forEach(function (subadvice) {
+              var adviceSubValue = result.advice[key][advice][subadvice]
+              formattedValues.push(advice + ': ' + adviceSubValue + '\n')
+            })
+          } else {
+            formattedValues.push(advice + ': ' + adviceValue + '\n')
+          }
         })
         var valuesList = formattedValues.join('\n')
         $adviceValueList.appendChild(document.createTextNode(valuesList))
@@ -151,22 +169,31 @@ function outputResults (result) {
   output.appendChild(postOutput)
   $results.appendChild(output)
 
-  // unicornify()
+  unicornify()
 
   var toggles = document.getElementsByClassName('js-toggle')
   for (var i = 0; i < toggles.length; i++) {
     toggles[i].addEventListener('click', function (e) {
-      var $target = e.target
-      if (e.target.classList.contains('js-toggle')) {
-        $target.classList.toggle('is-visible')
-        if ($target.classList.contains('is-visible')) {
-          $target.nextElementSibling.style.display = ''
-        } else {
-          $target.nextElementSibling.style.display = 'none'
-        }
+      var $target = closest(e.target, 'js-toggle')
+      $target.classList.toggle('is-visible')
+      if ($target.classList.contains('is-visible')) {
+        $target.nextElementSibling.style.display = ''
+      } else {
+        $target.nextElementSibling.style.display = 'none'
       }
-    }, false)
+    }, true)
   }
+}
+
+var closest = function (el, target) {
+  Console.log(el.className, target)
+  while (!el.classList.contains(target)) {
+    el = el.parentNode
+    if (!el) {
+      return null
+    }
+  }
+  return el
 }
 
 function colourScore ($elem, score) {
@@ -183,7 +210,6 @@ function colourScore ($elem, score) {
 
 function unicornify () {
   var step = 4 // colorChage step, use negative value to change direction
-  var ms = 10 // loop every
   var $unicorns = document.getElementsByClassName('is-unicorn')
   var itv
 
@@ -211,15 +237,16 @@ function unicornify () {
   }
 
   function anim ($ch) {
-    itv = setInterval(function () {
-      $ch.forEach(function (k) {
-        var h = +k.getAttribute('style').split(',')[0].split('(')[1] - step % 360
-        k.setAttribute('style', 'color:hsla(' + h + ', 100%, 50%, 1)')
-      })
-    }, ms)
+    $ch.forEach(function (k) {
+      var h = +k.getAttribute('style').split(',')[0].split('(')[1] - step % 360
+      k.setAttribute('style', 'color:hsla(' + h + ', 100%, 50%, 1)')
+    })
+    itv = window.requestAnimationFrame(function () {
+      anim($ch)
+    })
   }
 
   function stop () {
-    clearInterval(itv)
+    window.cancelAnimationFrame(itv)
   }
 }
