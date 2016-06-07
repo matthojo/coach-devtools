@@ -54,11 +54,13 @@ body {
 .results-panel h2{
   margin: 0;
   padding: 0.312rem 1.25rem 0.312rem 0;
+  font-size: 1.5rem;
   text-transform: capitalize;
 }
 
 .results-panel h3{
   margin-bottom: 0.312rem;
+  font-size: 1.25rem;
 }
 
 .results-panel p {

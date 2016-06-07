@@ -60,7 +60,7 @@ function outputResults (result) {
   var scoreOutput = document.createDocumentFragment()
 
   // Append Score
-  var scoreText = document.createTextNode('Score: ' + result.advice.score + '/100')
+  var scoreText = document.createTextNode('Overall: ' + result.advice.score + '/100')
   scoreOutput.appendChild(scoreText)
   $score.appendChild(scoreOutput)
   colourScore($score, result.advice.score)
