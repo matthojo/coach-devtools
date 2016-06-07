@@ -54,17 +54,21 @@ body {
 .results-panel h2{
   margin: 0;
   padding: 0.312rem 1.25rem 0.312rem 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   text-transform: capitalize;
 }
 
 .results-panel h3{
   margin-bottom: 0.312rem;
-  font-size: 1.25rem;
+  font-size: 1.1rem;
 }
 
 .results-panel p {
   line-height: 1.5;
+}
+
+.description {
+  color: #999;
 }
 
 .results-panel pre {

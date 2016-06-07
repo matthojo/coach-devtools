@@ -108,6 +108,7 @@ function outputResults (result) {
 
         // Add Advice description
         var $adviceDescription = document.createElement('p')
+        $adviceDescription.classList.add('description')
         $adviceDescription.appendChild(document.createTextNode(adviceObj.description))
         $adviceSubSection.appendChild($adviceDescription)
 
@@ -141,13 +142,18 @@ function outputResults (result) {
 
         adviceList = Object.keys(result.advice[key]).sort()
         var formattedValues = []
+
         adviceList.forEach(function (advice) {
           var adviceValue = result.advice[key][advice]
-          if (typeof result.advice[key][advice] === 'object') {
+          if (typeof adviceValue === 'object') {
             adviceList = Object.keys(result.advice[key][advice]).sort()
             adviceList.forEach(function (subadvice) {
               var adviceSubValue = result.advice[key][advice][subadvice]
-              formattedValues.push(advice + ': ' + adviceSubValue + '\n')
+              if (Array.isArray(adviceSubValue) && adviceSubValue.length > 0) {
+                formattedValues.push(subadvice + ': ' + adviceSubValue.join('\n') + '\n')
+              } else {
+                formattedValues.push(subadvice + ': ' + adviceSubValue + '\n')
+              }
             })
           } else {
             formattedValues.push(advice + ': ' + adviceValue + '\n')
@@ -186,7 +192,6 @@ function outputResults (result) {
 }
 
 var closest = function (el, target) {
-  Console.log(el.className, target)
   while (!el.classList.contains(target)) {
     el = el.parentNode
     if (!el) {
