@@ -44,6 +44,6 @@ gulp.task('zip', () => {
     .pipe(gulp.dest('build'));
 })
 
-gulp.task('default', ['clean'], () => {
+gulp.task('default', ['clean', 'build'], () => {
     gulp.start('zip');
 })

@@ -1,36 +1,5 @@
 /* global chrome */
 
-function Console () {
-}
-
-Console.Type = {
-  LOG: 'log',
-  DEBUG: 'debug',
-  INFO: 'info',
-  WARN: 'warn',
-  ERROR: 'error',
-  GROUP: 'group',
-  GROUP_COLLAPSED: 'groupCollapsed',
-  GROUP_END: 'groupEnd'
-}
-
-Console.addMessage = function (type, format, args) {
-  chrome.runtime.sendMessage({
-    command: 'sendToConsole',
-    tabId: chrome.devtools.tabId,
-    args: escape(JSON.stringify(Array.prototype.slice.call(arguments, 0)))
-  })
-};
-
-// Generate Console output methods, i.e. Console.log(), Console.debug() etc.
-(function () {
-  var consoleTypes = Object.getOwnPropertyNames(Console.Type)
-  for (var type = 0; type < consoleTypes.length; ++type) {
-    var methodName = Console.Type[consoleTypes[type]]
-    Console[methodName] = Console.addMessage.bind(Console, methodName)
-  }
-})()
-
 document.getElementsByClassName('js-analyse')[0].addEventListener('click', function (e) {
   chrome.runtime.sendMessage({
     command: 'init',
@@ -44,8 +13,6 @@ document.getElementsByClassName('js-analyse')[0].addEventListener('click', funct
 }, false)
 
 function outputResults (result) {
-  Console.log(result)
-
   // Get content containers
   var $results = document.getElementsByClassName('js-results')[0]
   var $score = document.getElementsByClassName('js-score')[0]
