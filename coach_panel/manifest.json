@@ -1,6 +1,6 @@
 {
   "name": "Coach Panel",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "manifest_version": 2,
   "description": "Devtools panel to visualise Coach results",
   "devtools_page": "devtools.html",

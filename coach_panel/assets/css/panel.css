@@ -14,6 +14,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+a {
+  color: #0097E3;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
 .intro-panel {
   text-align: center;
 }
@@ -108,7 +117,7 @@ body {
 }
 
 .score-box.is-unicorn {
-  background: linear-gradient(-45deg, #24C6DC , #514A9D);
+  background: linear-gradient(-45deg, #514A9D, #0097E3);
   color: #FFFFFF;
 }
 
