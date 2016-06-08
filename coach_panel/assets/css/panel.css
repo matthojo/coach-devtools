@@ -10,6 +10,8 @@ body {
   margin: 0;
   background: #fff;
   font-size: 1em;
+  font-family: Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .intro-panel {
@@ -19,7 +21,7 @@ body {
 .nav {
   display: flex;
   align-items: center;
-  padding: 0.312rem 1.25rem;
+  padding: 0.825rem 1.25rem;
   background-color: #eceff1;
   border-bottom: 1px solid #ccc;
 }
@@ -42,6 +44,7 @@ body {
 }
 
 .results-panel__score {
+  margin: 1.25rem 0;
   font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
@@ -53,14 +56,20 @@ body {
 
 .results-panel h2{
   margin: 0;
-  padding: 0.312rem 1.25rem 0.312rem 0;
-  font-size: 1.2rem;
+  margin-bottom: 1.125rem;
+  padding: 1rem 1.25rem;
+  background: #F7F7F7;
+  border-radius: 3px;
+  font-size: 1.125rem;
+  color: #222222;
   text-transform: capitalize;
 }
 
 .results-panel h3{
+  /*margin-left: 1.125rem;*/
   margin-bottom: 0.312rem;
-  font-size: 1.1rem;
+  font-size: 1.125rem;
+  color: #222222;
 }
 
 .results-panel p {
@@ -75,8 +84,41 @@ body {
   font-size: 0.875rem;
 }
 
+.score-box {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.75rem;
+  padding: 0.187rem 0.625rem;
+  border-radius: 3px;
+  font-size: 1.125rem;
+  font-weight: bold;
+  color: #FFFFFF;
+}
+
+.score-box.is-unicorn {
+  background: linear-gradient(-45deg, #24C6DC , #514A9D);
+  color: #FFFFFF;
+}
+
+.score-box.is-good {
+  background-color: #6CC466;
+  color: #FFFFFF;
+}
+
+.score-box.is-ok {
+  background-color: #FE885A;
+  color: #FFFFFF;
+}
+
+.score-box.is-bad {
+  background-color: #F1576C;
+  color: #FFFFFF;
+}
+
 .advice-section {
+  margin-left: 1.25rem;
   padding-left: 1.25rem;
+  padding-bottom: 1.25rem;
 }
 
 .advice-sub-section {
@@ -88,15 +130,15 @@ body {
 }
 
 .is-good {
-  color: #8bc34a;
+  color: #6CC466;
 }
 
 .is-ok {
-  color: #ff9800;
+  color: #FE885A;
 }
 
 .is-bad {
-  color: #f44336;
+  color: #F1576C;
 }
 
 .toggle {
@@ -116,24 +158,20 @@ body {
   content: ' \25b2'
 }
 
-.content-center {
-  max-width: 67.5rem;
-  margin: 0 auto;
-}
-
 .button {
   padding: 10px 20px 10px 20px;
+  background: rgba(0,151,227,0.09);
+  border: 1px solid #0097E3;
   border-radius: 3px;
-  border: none;
-  background: #30ba87;
-  color: #ffffff;
-  font-size: 1rem;
+  color: #0097E3;
+  font-size: 1.125rem;
   text-decoration: none;
   cursor: pointer;
 }
 
 .button:hover {
-  background: #169e6a;
+  background: #0097E3;
+  color: #FFFFFF;
   text-decoration: none;
 }
 

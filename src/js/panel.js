@@ -44,9 +44,9 @@ function outputResults (result) {
     if (result.advice[key].adviceList) {
       $title = document.createElement('h2')
 
-      $title.appendChild(document.createTextNode(key + ' (' + result.advice[key].score + '/100)'))
-      colourScore($title, result.advice[key].score)
+      $title.appendChild(document.createTextNode(key))
       $title.classList.add('js-toggle', 'toggle')
+      $title.appendChild(createScore(result.advice[key].score))
       output.appendChild($title)
 
       $adviceSection = document.createElement('div')
@@ -59,9 +59,9 @@ function outputResults (result) {
 
         // Add Advice title
         var $adviceTitle = document.createElement('h3')
-        $adviceTitle.appendChild(document.createTextNode(adviceObj.title + ' (' + adviceObj.score + '/100)'))
-        colourScore($adviceTitle, adviceObj.score)
+        $adviceTitle.appendChild(document.createTextNode(adviceObj.title))
         $adviceTitle.classList.add('js-toggle', 'toggle')
+        $adviceTitle.appendChild(createScore(adviceObj.score))
         $adviceSection.appendChild($adviceTitle)
 
         var $adviceSubSection = document.createElement('div')
@@ -142,8 +142,6 @@ function outputResults (result) {
   output.appendChild(postOutput)
   $results.appendChild(output)
 
-  unicornify()
-
   var toggles = document.getElementsByClassName('js-toggle')
   for (var i = 0; i < toggles.length; i++) {
     toggles[i].addEventListener('click', function (e) {
@@ -168,57 +166,24 @@ var closest = function (el, target) {
   return el
 }
 
+function createScore (score) {
+  var $elem = document.createElement('span')
+  $elem.classList.add('score-box')
+  colourScore($elem, score)
+  $elem.appendChild(document.createTextNode(score))
+
+  return $elem
+}
+
 function colourScore ($elem, score) {
   if (score === 100) {
-    $elem.classList.add('is-amazing', 'is-unicorn')
-  } else if (score > 75) {
+    $elem.classList.add('is-unicorn')
+  }
+  if (score > 75) {
     $elem.classList.add('is-good')
   } else if (score > 50) {
     $elem.classList.add('is-ok')
   } else {
     $elem.classList.add('is-bad')
-  }
-}
-
-function unicornify () {
-  var step = 4 // colorChage step, use negative value to change direction
-  var $unicorns = document.getElementsByClassName('is-unicorn')
-  var itv
-
-  for (var i = 0; i < $unicorns.length; i++) {
-    var $uni = $unicorns[i]
-    var txt = $uni.innerHTML
-    var len = txt.length
-    var lev = 360 / len
-    var newCont = ''
-
-    for (var j = 0; j < len; j++) {
-      newCont += '<span style=\'color:hsla(' + j * lev + ', 100%, 50%, 1)\'>' + txt.charAt(j) + '</span>'
-    }
-
-    $uni.innerHTML = newCont // Replace with new content
-
-    $uni.addEventListener('mouseover', function (e) {
-      var $ch = e.target.parentNode.querySelectorAll('span')
-      anim($ch)
-    }, false)
-
-    $uni.addEventListener('mouseout', function (e) {
-      stop()
-    }, false)
-  }
-
-  function anim ($ch) {
-    $ch.forEach(function (k) {
-      var h = +k.getAttribute('style').split(',')[0].split('(')[1] - step % 360
-      k.setAttribute('style', 'color:hsla(' + h + ', 100%, 50%, 1)')
-    })
-    itv = window.requestAnimationFrame(function () {
-      anim($ch)
-    })
-  }
-
-  function stop () {
-    window.cancelAnimationFrame(itv)
   }
 }
