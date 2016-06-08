@@ -44,9 +44,7 @@ body {
 }
 
 .results-panel__score {
-  margin: 1.25rem 0;
-  font-size: 1.5rem;
-  font-weight: bold;
+  margin: 0.625rem 0 1.25rem;
   text-align: center;
 }
 
@@ -93,6 +91,20 @@ body {
   font-size: 1.125rem;
   font-weight: bold;
   color: #FFFFFF;
+}
+
+.score-box--large {
+  font-size: 2rem;
+  padding: 0.625rem 1rem;
+}
+
+.score-box--large:after {
+  content: ' /100';
+  display: inline-block;
+  /*vertical-align: super;*/
+  margin-left: 0.312rem;
+  font-size: 0.6em;
+  font-weight: normal;
 }
 
 .score-box.is-unicorn {
